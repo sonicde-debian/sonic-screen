@@ -14,4 +14,4 @@ override_dh_auto_test:
 	:
 
 execute_after_dh_fixperms-arch:
-	chmod -x $(CURDIR)/debian/kscreen/usr/share/kglobalaccel/org.kde.kscreen.desktop
+	chmod -x $(CURDIR)/debian/sonic-screen/usr/share/kglobalaccel/org.kde.kscreen.desktop
