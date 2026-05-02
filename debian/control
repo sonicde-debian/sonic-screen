@@ -49,6 +49,8 @@ Depends: kde-cli-tools (>= 4:6.2.90~),
          ${shlibs:Depends},
 Recommends: systemsettings,
             upower,
+Conflicts: kscreen,
+Provides: kscreen (= ${binary:Version}),
 Description: Sonic monitor hotplug and screen handling
  Sonic Screen provides multiple monitor support.  This support tries to be
  as smart as possible adapting the behavior of it to each use case
