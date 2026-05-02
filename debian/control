@@ -1,0 +1,59 @@
+Source: sonic-screen
+Section: kde
+Maintainer: NexusSfan <nexussfan@duck.com>
+Build-Depends: debhelper-compat (= 13),
+               dh-sequence-kf6,
+               cmake (>= 3.16~),
+               extra-cmake-modules (>= 6.22.0~),
+               gettext,
+               libkf6config-dev (>= 6.22.0~),
+               libkf6crash-dev (>= 6.22.0~),
+               libkf6dbusaddons-dev (>= 6.22.0~),
+               libkf6i18n-dev (>= 6.22.0~),
+               libkf6kcmutils-dev (>= 6.22.0~),
+               libkf6svg-dev (>= 6.22.0~),
+               libkf6xmlgui-dev (>= 6.22.0~),
+               sonic-screen-library-dev (>= 4:6.6.3~),
+               liblayershellqtinterface-dev (>= 6.6~),
+               libsonicinterface-dev (>= 6.6.3~),
+               libx11-xcb-dev,
+               libxcb-util-dev,
+               libxcb1-dev,
+               libxi-dev,
+               libxkbcommon-dev,
+               qt6-base-dev (>= 6.10.0~),
+               qt6-base-private-dev (>= 6.6.0+dfsg~),
+               qt6-declarative-dev (>= 6.10.0~),
+               qt6-sensors-dev (>= 6.7.0~),
+               wayland-protocols (>= 1.41~),
+Standards-Version: 4.7.4
+Homepage: https://github.com/Sonic-DE/sonic-screen
+Vcs-Browser: https://github.com/sonicde-debian/sonic-screen
+Vcs-Git: https://github.com/sonicde-debian/sonic-screen.git
+
+Package: sonic-screen
+Architecture: any
+Depends: kde-cli-tools (>= 4:6.2.90~),
+         sonic-desktoptheme,
+         qml6-module-org-kde-config,
+         qml6-module-org-kde-kcmutils,
+         qml6-module-org-kde-kirigami,
+         qml6-module-org-kde-kitemmodels,
+         qml6-module-org-kde-kquickcontrolsaddons,
+         qml6-module-org-kde-ksvg,
+         qml6-module-qtquick,
+         qml6-module-qtquick-controls,
+         qml6-module-qtquick-dialogs,
+         qml6-module-qtquick-layouts,
+         ${misc:Depends},
+         ${shlibs:Depends},
+Recommends: systemsettings,
+            upower,
+Description: Sonic monitor hotplug and screen handling
+ Sonic Screen provides multiple monitor support.  This support tries to be
+ as smart as possible adapting the behavior of it to each use case
+ making the configuration of monitors as simple as plugging them into
+ your computer.
+ .
+ This package contains the modules and plugins for monitor hotplug and
+ automatic screen handling.

@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- -DBUILD_TESTING=OFF
+
+override_dh_auto_test:
+	# Disable dh_auto_test at build time
+	:
+
+execute_after_dh_fixperms-arch:
+	chmod -x $(CURDIR)/debian/kscreen/usr/share/kglobalaccel/org.kde.kscreen.desktop
