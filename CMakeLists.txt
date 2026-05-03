@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(KScreen)
-set(PROJECT_VERSION "6.6.3")
+set(PROJECT_VERSION "6.6.4")
 set(KSCREEN_VERSION ${PROJECT_VERSION})
 
 add_definitions("-DKSCREEN_VERSION=\"${KSCREEN_VERSION}\"")
 
-set(PROJECT_DEP_VERSION "6.6.3")
+set(PROJECT_DEP_VERSION "6.6.4")
 set(QT_MIN_VERSION "6.10.0")
 set(KF6_MIN_VERSION "6.22.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.82")
@@ -58,14 +58,6 @@ set_package_properties(KF6ImageFormats PROPERTIES
 find_package(KF6Screen ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(Plasma ${PROJECT_DEP_VERSION} REQUIRED)
 find_package(PlasmaQuick ${PROJECT_DEP_VERSION} REQUIRED)
-
-find_package(LayerShellQt)
-set_package_properties(LayerShellQt PROPERTIES
-    DESCRIPTION "Layer shell Qt bindings"
-    URL "https://invent.kde.org/plasma/layer-shell-qt"
-    PURPOSE "Required for the screen selection osd"
-    TYPE REQUIRED
-)
 
 find_package(X11)
 set_package_properties(X11 PROPERTIES
