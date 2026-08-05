@@ -16,13 +16,13 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasma5support as P5Support
 import org.kde.plasma.plasmoid
-import org.kde.private.kscreen as KScreen
 
 PlasmoidItem {
     id: root
 
     // Only show if the user enabled presentation mode
     Plasmoid.status: presentationModeEnabled ? PlasmaCore.Types.ActiveStatus : PlasmaCore.Types.PassiveStatus
+    Plasmoid.icon: "preferences-desktop-display-randr-symbolic"
     toolTipSubText: presentationModeEnabled ? i18n("Presentation mode is enabled") : ""
 
     readonly property string kcmName: "kcm_kscreen"
@@ -48,7 +48,7 @@ PlasmoidItem {
 
             var data = pmSource.data.Inhibitions;
             if (data) {
-                for (var key in data) {
+                for (const key in data) {
                     if (key === "plasmashell" || key === "plasmoidviewer") { // ignore our own inhibition
                         continue;
                     }
@@ -80,7 +80,7 @@ PlasmoidItem {
         ScreenLayoutSelection {
             Layout.leftMargin: Kirigami.Units.smallSpacing
             Layout.fillWidth: true
-            screenLayouts: Plasmoid.availableActions
+            screenLayouts: Plasmoid.availableActions // qmllint disable missing-property
         }
 
         PresentationModeItem {

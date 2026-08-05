@@ -22,6 +22,8 @@ Kirigami.FormLayout {
     readonly property int sliderWidth: Kirigami.Units.gridUnit * 12
     readonly property int maxSpinboxWidth: Kirigami.Units.gridUnit * 7
     readonly property bool hdrAvailable: (element.capabilities & KScreen.Output.Capability.HighDynamicRange) && (element.capabilities & KScreen.Output.Capability.WideColorGamut)
+    readonly property bool hdrActive: hdrAvailable && element.hdr
+    readonly property var colorProfileSource: hdrActive ? element.hdrColorProfileSource : element.colorProfileSource
 
     signal reorder()
 
@@ -95,6 +97,7 @@ Kirigami.FormLayout {
 
             Accessible.description: i18nc("@info accessible description of slider value", "in percent of regular scale")
 
+            Kirigami.StyleHints.tickMarkStepSize: stepSize
             Layout.fillWidth: true
             Layout.minimumWidth: root.sliderWidth
             from: 50
@@ -227,124 +230,48 @@ Kirigami.FormLayout {
         }
     }
 
-    RowLayout {
-        // Set the same limit as the device ComboBox
-        Layout.maximumWidth: Kirigami.Units.gridUnit * 14
-        Kirigami.FormData.label: i18nc("@label:listbox", "Color profile:")
-        Kirigami.FormData.buddyFor: colorProfileCombobox
-        visible: (element.capabilities & (KScreen.Output.Capability.IccProfile | KScreen.Output.Capability.BuiltInColorProfile)) && !(element.hdr && root.hdrAvailable)
-        spacing: Kirigami.Units.smallSpacing
+    // for SDR
+    ColorProfileSelector {
+        colorProfileSource: element.colorProfileSource
+        onSourceChanged: element.colorProfileSource = colorProfileSource
 
-        QQC2.ComboBox {
-            id: colorProfileCombobox
-            Layout.minimumWidth: root.comboboxWidth
-            model: [
-                {
-                    text: i18nc("@item:inlistbox color profile", "None"),
-                    value: KScreen.Output.ColorProfileSource.sRGB,
-                    available: true
-                },
-                {
-                    text: i18nc("@item:inlistbox color profile", "ICC profile"),
-                    value: KScreen.Output.ColorProfileSource.ICC,
-                    available: element.capabilities & KScreen.Output.Capability.IccProfile
-                },
-                {
-                    text: i18nc("@item:inlistbox color profile", "Built-in"),
-                    value: KScreen.Output.ColorProfileSource.EDID,
-                    available: element.capabilities & KScreen.Output.Capability.BuiltInColorProfile
-                }
-            ]
-            textRole: "text"
-            valueRole: "value"
+        supportsNoProfile: true
+        supportsIccProfile: (element.capabilities & KScreen.Output.Capability.IccProfile)
+        supportsBuiltInProfile: (element.capabilities & KScreen.Output.Capability.BuiltInColorProfile)
+        comboboxWidth: root.comboboxWidth
 
-            onActivated: element.colorProfileSource = currentValue;
-            Component.onCompleted: currentIndex = indexOfValue(element.colorProfileSource);
-
-            delegate: QQC2.ItemDelegate {
-                width: colorProfileCombobox.width
-                text: modelData.text
-                enabled: modelData.available
-                highlighted: colorProfileCombobox.highlightedIndex == index
-            }
-        }
-        Kirigami.ContextualHelpButton {
-            toolTipText: i18nc("@info:tooltip", "Use the color profile built into the screen itself, if present. Note that built-in color profiles are sometimes wrong, and often inaccurate. For optimal color fidelity, calibration using a colorimeter is recommended.")
-            visible: (!element.hdr || !root.hdrAvailable) && element.colorProfileSource == KScreen.Output.ColorProfileSource.EDID
-        }
+        visible: (supportsIccProfile || supportsBuiltInProfile) && !root.hdrActive
     }
 
-    RowLayout {
-        visible: (element.capabilities & KScreen.Output.Capability.IccProfile) && (element.colorProfileSource == KScreen.Output.ColorProfileSource.ICC)
-        spacing: Kirigami.Units.smallSpacing
+    IccSelector {
+        iccProfilePath: element.iccProfilePath
+        onPathChanged: element.iccProfilePath = iccProfilePath
 
-        Kirigami.ActionTextField {
-            id: iccProfileField
-            onTextChanged: element.iccProfilePath = text
-            onTextEdited: element.iccProfilePath = text
-            placeholderText: i18nc("@info:placeholder", "Enter ICC profile path…")
-            enabled: !root.hdrAvailable || !element.hdr
+        visible: (element.capabilities & KScreen.Output.Capability.IccProfile)
+              && (element.colorProfileSource == KScreen.Output.ColorProfileSource.ICC)
+              && !root.hdrActive
+    }
 
-            rightActions: Kirigami.Action {
-                icon.name: "edit-clear-symbolic"
-                visible: iccProfileField.text !== ""
-                onTriggered: {
-                    iccProfileField.text = ""
-                }
-            }
+    // for HDR
+    ColorProfileSelector {
+        colorProfileSource: element.hdrColorProfileSource
+        onSourceChanged: element.hdrColorProfileSource = colorProfileSource
 
-            Component.onCompleted: text = element.iccProfilePath;
-        }
+        supportsNoProfile: false
+        supportsIccProfile: (element.capabilities & KScreen.Output.Capability.HdrIccProfile)
+        supportsBuiltInProfile: (element.capabilities & KScreen.Output.Capability.BuiltInColorProfile)
+        comboboxWidth: root.comboboxWidth
 
-        QQC2.Button {
-            icon.name: "document-open-symbolic"
-            text: i18nc("@action:button", "Select ICC profile…")
-            display: QQC2.AbstractButton.IconOnly
-            onClicked: fileDialogComponent.incubateObject(root);
-            enabled: !root.hdrAvailable || !element.hdr
+        visible: (supportsIccProfile || supportsBuiltInProfile) && root.hdrActive
+    }
 
-            QQC2.ToolTip.visible: hovered
-            QQC2.ToolTip.text: text
-            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+    IccSelector {
+        iccProfilePath: element.hdrIccProfilePath
+        onPathChanged: element.hdrIccProfilePath = iccProfilePath
 
-            Accessible.role: Accessible.Button
-            Accessible.name: text
-            Accessible.description: i18n("Opens a file picker for the ICC profile")
-            Accessible.onPressAction: onClicked();
-        }
-
-        Component {
-            id: fileDialogComponent
-
-            FileDialog {
-                id: fileDialog
-                title: i18nc("@title:window", "Select ICC Profile")
-                currentFolder: StandardPaths.standardLocations(StandardPaths.HomeLocation)[0]
-                nameFilters: ["ICC profiles (*.icc *.icm)"]
-
-                onAccepted: {
-                    iccProfileField.text = urlToProfilePath(selectedFile);
-                    destroy();
-                }
-                onRejected: destroy();
-                Component.onCompleted: open();
-
-                function urlToProfilePath(qmlUrl) {
-                    const url = new URL(qmlUrl);
-                    let path = decodeURIComponent(url.pathname);
-                    // Remove the leading slash from the url
-                    if (url.protocol === "file:" && path.charAt(1) === ':') {
-                        path = path.substring(1);
-                    }
-                    return path;
-                }
-            }
-        }
-
-        Kirigami.ContextualHelpButton {
-            visible: root.hdrAvailable && element.hdr
-            toolTipText: i18nc("@info:tooltip", "ICC profiles aren’t compatible with HDR yet.")
-        }
+        visible: (element.capabilities & KScreen.Output.Capability.HdrIccProfile)
+              && (element.hdrColorProfileSource == KScreen.Output.ColorProfileSource.ICC)
+              && root.hdrActive
     }
 
     RowLayout {
@@ -367,24 +294,32 @@ Kirigami.FormLayout {
         }
     }
 
-    QQC2.Button {
-        id: hdrCalibrationButton
-        text: i18nc("@action:button", "Calibrate HDR Brightness…")
-        onClicked: kcm.startHdrCalibrator(element.name);
-        enabled: !kcm.needsSave
+    RowLayout {
+        spacing: Kirigami.Units.smallSpacing
 
-        // Set the same limit as the device ComboBox
-        Layout.maximumWidth: Kirigami.Units.gridUnit * 14
-        visible: root.hdrAvailable && element.hdr
+        QQC2.Button {
+            id: hdrCalibrationButton
+            text: i18nc("@action:button", "Calibrate HDR Brightness…")
+            onClicked: kcm.startHdrCalibrator(element.name);
+            enabled: !kcm.needsSave
 
-        QQC2.ToolTip.visible: hovered
-        QQC2.ToolTip.text: text
-        QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+            // Set the same limit as the device ComboBox
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 14
+            visible: root.hdrActive && element.colorProfileSource != KScreen.Output.ColorProfileSource.ICC
 
-        Accessible.role: Accessible.Button
-        Accessible.name: text
-        Accessible.description: i18n("Opens a window to calibrate HDR brightness")
-        Accessible.onPressAction: onClicked();
+            QQC2.ToolTip.visible: hovered
+            QQC2.ToolTip.text: text
+            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+
+            Accessible.role: Accessible.Button
+            Accessible.name: text
+            Accessible.description: i18n("Opens a window to calibrate HDR brightness")
+            Accessible.onPressAction: onClicked();
+        }
+        Kirigami.ContextualHelpButton {
+            visible: hdrCalibrationButton.visible && !hdrCalibrationButton.enabled
+            toolTipText: xi18nc("@info:tooltip", "HDR calibration can only be started if all settings are applied.")
+        }
     }
 
     RowLayout {
@@ -415,8 +350,7 @@ Note that this setting can have a large impact on performance.")
         }
         Kirigami.ContextualHelpButton {
             visible: element.colorPowerPreference == KScreen.Output.ColorPowerTradeoff.PreferEfficiency
-                  && element.colorProfileSource == KScreen.Output.ColorProfileSource.ICC
-                  && !(root.hdrAvailable && element.hdr)
+                  && root.colorProfileSource == KScreen.Output.ColorProfileSource.ICC
             toolTipText: xi18nc("@info:tooltip", "Preferring efficiency simplifies the ICC profile to matrix+shaper, improving performance at the cost of color accuracy.<nl/><nl/>\
 Note that changing this setting can have a large impact on performance.")
         }
@@ -489,12 +423,13 @@ Due to graphics driver limitations, the actually used resolution cannot be known
         Layout.maximumWidth: Kirigami.Units.gridUnit * 14
         spacing: Kirigami.Units.smallSpacing
 
-        visible: (root.hdrAvailable && element.hdr) || (element.colorProfileSource != KScreen.Output.ColorProfileSource.sRGB)
+        visible: root.hdrActive || (element.colorProfileSource != KScreen.Output.ColorProfileSource.sRGB)
         Kirigami.FormData.label: i18nc("@label", "sRGB color intensity:")
         Kirigami.FormData.buddyFor: sdrGamutSlider
 
         QQC2.Slider {
             id: sdrGamutSlider
+            Kirigami.StyleHints.tickMarkStepSize: stepSize
             Layout.fillWidth: true
             Layout.minimumWidth: root.sliderWidth
             from: 0
@@ -534,6 +469,41 @@ Due to graphics driver limitations, the actually used resolution cannot be known
     }
 
     RowLayout {
+        Layout.fillWidth: true
+        // Set the same limit as the device ComboBox
+        Layout.maximumWidth: Kirigami.Units.gridUnit * 14
+        spacing: Kirigami.Units.smallSpacing
+
+        visible: (element.capabilities & KScreen.Output.Capability.AbmLevel)
+              && element.colorPowerPreference == KScreen.Output.ColorPowerTradeoff.PreferEfficiency
+        Kirigami.FormData.label: i18nc("@label", "Adaptive Backlight Modulation:")
+        Kirigami.FormData.buddyFor: abmLevelSlider
+
+        QQC2.Slider {
+            id: abmLevelSlider
+            Kirigami.StyleHints.tickMarkStepSize: stepSize
+            Layout.fillWidth: true
+            Layout.minimumWidth: root.sliderWidth
+            from: 0
+            to: 4
+            stepSize: 1
+            live: true
+            value: element.abmLevel
+            onMoved: element.abmLevel = value
+        }
+        QQC2.SpinBox {
+            from: 0
+            to: 4
+            stepSize: 1
+            value: element.abmLevel
+            onValueModified: element.abmLevel = value
+        }
+        Kirigami.ContextualHelpButton {
+            toolTipText: i18nc("@info:tooltip", "Adaptive backlight modulation reduces power use at the cost of color accuracy")
+        }
+    }
+
+    RowLayout {
         id: ddcCiAllowedContainer
         // Set the same limit as the device ComboBox
         Layout.maximumWidth: Kirigami.Units.gridUnit * 14
@@ -561,12 +531,13 @@ Due to graphics driver limitations, the actually used resolution cannot be known
         Layout.maximumWidth: Kirigami.Units.gridUnit * 14
         spacing: Kirigami.Units.smallSpacing
 
-        visible: (root.hdrAvailable && element.hdr) || (element.capabilities & KScreen.Output.Capability.BrightnessControl)
+        visible: root.hdrActive || (element.capabilities & KScreen.Output.Capability.BrightnessControl)
         Kirigami.FormData.label: ddcCiAllowedContainer.visible ? "" : ddcCiAllowedContainer.Kirigami.FormData.label
         Kirigami.FormData.buddyFor: brightnessSlider
 
         QQC2.Slider {
             id: brightnessSlider
+            Kirigami.StyleHints.tickMarkStepSize: stepSize
             Layout.fillWidth: true
             Layout.minimumWidth: root.sliderWidth
             from: 0
@@ -620,6 +591,7 @@ Due to graphics driver limitations, the actually used resolution cannot be known
 
         QQC2.Slider {
             id: sharpnessSlider
+            Kirigami.StyleHints.tickMarkStepSize: stepSize
             Layout.fillWidth: true
             Layout.minimumWidth: root.sliderWidth
             from: 0

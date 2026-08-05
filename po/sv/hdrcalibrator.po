@@ -1,13 +1,13 @@
 # Copyright (C) 2025 This file is copyright:
 # This file is distributed under the same license as the kscreen package.
 #
-# SPDX-FileCopyrightText: 2025 Stefan Asserhäll <stefan.asserhall@gmail.com>
+# SPDX-FileCopyrightText: 2025, 2026 Stefan Asserhäll <stefan.asserhall@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kscreen\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-24 02:42+0000\n"
-"PO-Revision-Date: 2026-01-17 16:45+0100\n"
+"POT-Creation-Date: 2026-05-07 00:46+0000\n"
+"PO-Revision-Date: 2026-01-23 21:00+0100\n"
 "Last-Translator: Stefan Asserhäll <stefan.asserhall@gmail.com>\n"
 "Language-Team: Swedish <kde-i18n-doc@kde.org>\n"
 "Language: sv\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.08.3\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -27,37 +27,37 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "stefan.asserhall@gmail.com"
 
-#: hdrcalibrator.cpp:149 ui/Main.qml:15
+#: hdrcalibrator.cpp:137 Main.qml:16
 #, kde-format
 msgctxt "@title:window"
 msgid "HDR Calibration"
 msgstr "Kalibrering av stort dynamiskt omfång"
 
-#: ui/Main.qml:187 ui/Main.qml:365
+#: Main.qml:188 Main.qml:366
 #, kde-format
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Nästa"
 
-#: ui/Main.qml:194 ui/Main.qml:371
+#: Main.qml:195 Main.qml:372
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Switches to the next page"
 msgstr "Går till nästa sida"
 
-#: ui/Main.qml:198 ui/Main.qml:375 ui/Main.qml:475
+#: Main.qml:199 Main.qml:376 Main.qml:476
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ui/Main.qml:201 ui/Main.qml:378 ui/Main.qml:478
+#: Main.qml:202 Main.qml:379 Main.qml:479
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Cancels the calibration process"
 msgstr "Avbryter kalibreringsprocessen"
 
-#: ui/Main.qml:210
+#: Main.qml:211
 #, kde-format
 msgid ""
 "To determine the maximum brightness of the screen, adjust the slider until "
@@ -66,7 +66,7 @@ msgstr ""
 "För att bestämma skärmens maximala ljusstyrka, justera reglaget tills "
 "logotypen knappt syns"
 
-#: ui/Main.qml:389
+#: Main.qml:390
 #, fuzzy, kde-format
 #| msgid ""
 #| "Configure how bright \"100%\" on the normal brightness slider should be. "
@@ -88,7 +88,7 @@ msgstr ""
 "För att undvika ljusstyrkevariationer rekommenderas att inte överskrida "
 "skärmens maximala medelljusstyrka på %1 cd/m²."
 
-#: ui/Main.qml:391
+#: Main.qml:392
 #, fuzzy, kde-format
 #| msgid ""
 #| "Configure how bright \"100%\" on the normal brightness slider should be. "
@@ -108,35 +108,35 @@ msgstr ""
 "För att undvika ljusstyrkevariationer rekommenderas att inte överskrida "
 "skärmens maximala medelljusstyrka på %1 cd/m²."
 
-#: ui/Main.qml:438
+#: Main.qml:439
 #, kde-format
 msgid "Maximum luminance: %1cd/m²"
 msgstr "Maximal ljusstyrka: %1 cd/m²"
 
-#: ui/Main.qml:459
+#: Main.qml:460
 #, kde-format
 msgid "Reference luminance / paper white: %1cd/m²"
 msgstr "Referensljusstyrka, pappersvit: %1 cd/m²"
 
-#: ui/Main.qml:470
+#: Main.qml:471
 #, kde-format
 msgctxt "@action:checkbox"
 msgid "Assume Windows HDR applications are calibrated for this screen"
 msgstr "Anta att Windows HDR-program är kalibrerade för den här skärmen"
 
-#: ui/Main.qml:482
+#: Main.qml:483
 #, kde-format
 msgctxt "@action:button"
 msgid "Done"
 msgstr "Klar"
 
-#: ui/Main.qml:491
+#: Main.qml:492
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Finish the calibration process"
 msgstr "Slutför kalibreringsprocessen"
 
-#: ui/Main.qml:500
+#: Main.qml:501
 #, kde-format
 msgid ""
 "Many Windows applications come with their own calibration settings, which "
