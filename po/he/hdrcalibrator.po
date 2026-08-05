@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kscreen\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-24 02:42+0000\n"
+"POT-Creation-Date: 2026-05-07 00:46+0000\n"
 "PO-Revision-Date: 2026-02-26 08:53+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
@@ -28,37 +28,37 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "kde-l10n-he@kde.org"
 
-#: hdrcalibrator.cpp:149 ui/Main.qml:15
+#: hdrcalibrator.cpp:137 Main.qml:16
 #, kde-format
 msgctxt "@title:window"
 msgid "HDR Calibration"
 msgstr "כיול HDR"
 
-#: ui/Main.qml:187 ui/Main.qml:365
+#: Main.qml:188 Main.qml:366
 #, kde-format
 msgctxt "@action:button"
 msgid "Next"
 msgstr "הבא"
 
-#: ui/Main.qml:194 ui/Main.qml:371
+#: Main.qml:195 Main.qml:372
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Switches to the next page"
 msgstr "מעבר לעמוד הבא"
 
-#: ui/Main.qml:198 ui/Main.qml:375 ui/Main.qml:475
+#: Main.qml:199 Main.qml:376 Main.qml:476
 #, kde-format
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ui/Main.qml:201 ui/Main.qml:378 ui/Main.qml:478
+#: Main.qml:202 Main.qml:379 Main.qml:479
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Cancels the calibration process"
 msgstr "ביטול תהליך הכיול הזה"
 
-#: ui/Main.qml:210
+#: Main.qml:211
 #, kde-format
 msgid ""
 "To determine the maximum brightness of the screen, adjust the slider until "
@@ -67,7 +67,7 @@ msgstr ""
 "כדי לקבוע את בהירות המסך המרבית, יש לכוון את המחוון עד שבקושי ניתן לראות את "
 "הלוגו"
 
-#: ui/Main.qml:389
+#: Main.qml:390
 #, kde-format
 msgid ""
 "Configure how bright “100%” on the normal brightness slider should be. Make "
@@ -81,7 +81,7 @@ msgstr ""
 "כדי להימנע מתנודות בבהירות, מומלץ לא לחרוג מהבהירות הממוצעת המרבית של התצוגה "
 "על סך %1cd/m²"
 
-#: ui/Main.qml:391
+#: Main.qml:392
 #, kde-format
 msgid ""
 "Configure how bright “100%” on the normal brightness slider should be. Make "
@@ -91,35 +91,35 @@ msgstr ""
 "הגדרה כיצד „100%” בהירות אמורה להיות במחוון הרגיל. יש להפוך אותה להכי בהירה "
 "שאי פעם יהיה לך צורך, כל עוד תמונת ה־HDR עדיין נראית טוב והמדרגים חלקים."
 
-#: ui/Main.qml:438
+#: Main.qml:439
 #, kde-format
 msgid "Maximum luminance: %1cd/m²"
 msgstr "הארה מרבית: %1cd למטר רבוע"
 
-#: ui/Main.qml:459
+#: Main.qml:460
 #, kde-format
 msgid "Reference luminance / paper white: %1cd/m²"
 msgstr "לבן תאורה / נייר לסימוכין: %1cd למטר רבוע"
 
-#: ui/Main.qml:470
+#: Main.qml:471
 #, kde-format
 msgctxt "@action:checkbox"
 msgid "Assume Windows HDR applications are calibrated for this screen"
 msgstr "להניח שיישומי Windows באיכות HDR מכוילים למסך הזה"
 
-#: ui/Main.qml:482
+#: Main.qml:483
 #, kde-format
 msgctxt "@action:button"
 msgid "Done"
 msgstr "סיום"
 
-#: ui/Main.qml:491
+#: Main.qml:492
 #, kde-format
 msgctxt "@info accessible description of a push button"
 msgid "Finish the calibration process"
 msgstr "סיום תהליך הכיול"
 
-#: ui/Main.qml:500
+#: Main.qml:501
 #, kde-format
 msgid ""
 "Many Windows applications come with their own calibration settings, which "

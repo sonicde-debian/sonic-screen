@@ -32,10 +32,10 @@ Control {
             actionRepeater.currentIndex, 1, false);
     }
 
-    leftPadding: shadow.margins.left + background.margins.left
-    rightPadding: shadow.margins.right + background.margins.right
-    topPadding: shadow.margins.top + background.margins.top
-    bottomPadding: shadow.margins.bottom + background.margins.bottom
+    leftPadding: shadow.margins.left + backgroundItem.margins.left
+    rightPadding: shadow.margins.right + backgroundItem.margins.right
+    topPadding: shadow.margins.top + backgroundItem.margins.top
+    bottomPadding: shadow.margins.bottom + backgroundItem.margins.bottom
 
     component OsdButton : PlasmaComponents.Button {
         required property int index
@@ -140,7 +140,7 @@ Control {
             switch (event.key) {
                 case Qt.Key_Return:
                 case Qt.Key_Enter:
-                    root.clicked(actionRepeater.itemAt(actionRepeater.currentIndex).actionId)
+                    root.clicked(actionRepeater.itemAt(actionRepeater.currentIndex).actionId) // qmllint disable missing-property
                     break
                 case Qt.Key_Right:
                 case Qt.Key_Left:
@@ -172,7 +172,7 @@ Control {
         prefix: "shadow"
 
         KSvg.FrameSvgItem {
-            id: background
+            id: backgroundItem
             anchors.leftMargin: shadow.margins.left
             anchors.rightMargin: shadow.margins.right
             anchors.topMargin: shadow.margins.top
